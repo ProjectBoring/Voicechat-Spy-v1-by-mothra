@@ -376,6 +376,6 @@ local PlayerRemoving; PlayerRemoving = Players.PlayerRemoving:Connect(function(P
             end
         end
     else
-        PlayerRemoving:Disconnect()
+        PlayerRemoving:Disconnect(); UnspyVoicechat(Player)
     end
 end)
