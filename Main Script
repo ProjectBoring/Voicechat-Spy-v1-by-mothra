@@ -338,7 +338,7 @@ local function SpyVoicechat(Player, Settings)
                             if NewFrame.Parent then
                                 NewFrame.Button.TextColor3 = Color3.fromRGB(255, 0, 0); ContinueLoop = false
                                 
-                                if not Player.Parent then
+                                if not Player or not Player.Parent then
                                     Button:Destroy(); UnspyVoicechat(Player)
                                 end
                             end
@@ -370,12 +370,8 @@ end)
 
 local PlayerRemoving; PlayerRemoving = Players.PlayerRemoving:Connect(function(Player)
     if not Exiting then
-        for _, v in next, SpiedPlayers do
-            if Player == v then
-                SpiedPlayers[_] = nil; break
-            end
-        end
+        UnspyVoicechat(Player)
     else
-        PlayerRemoving:Disconnect(); UnspyVoicechat(Player)
+        PlayerRemoving:Disconnect()
     end
 end)
