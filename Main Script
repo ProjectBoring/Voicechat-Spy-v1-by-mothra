@@ -292,7 +292,7 @@ end
 
 local function SpyVoicechat(Player, Settings)
     local ContinueLoop = false
-    local Player = assert(typeof(Player) == 'Instance' and Player:IsA('Player'), 'invalid argument #1 to \'SpyVoicechat\' (Instance [Player] expected, got: '..tostring(typeof(Player)..(tostring(typeof(Player) == 'Instance' and ', '..Player.ClassName or '')..')'))) and Player or nil
+    local Player = assert(typeof(Player) == 'Instance' and Player:IsA('Player'), 'invalid argument #1 to \'SpyVoicechat\' (Instance [Player] expected, got '..tostring(typeof(Player))..')') and Player or nil
     local CurrentCamera, Character, VoiceOrigin = workspace.CurrentCamera, Player and Player.Character and Player.Character.Parent and Player.Character or nil, Player and Player.Character and Player.Character.Parent and Player.Character:FindFirstChild('HumanoidRootPart')
     local NewFrame = PlayerFrame:Clone()
     local Settings = assert(type(getgenv().VoicechatSpySettings) == 'table', 'invalid argument #2 to \'SpyVoicechat\' (table [VoicechatSpySettings] expected, got '..tostring(type(getgenv().VoicechatSpySettings))..')') and assert(getgenv().VoicechatSpySettings.TrackVoice3d ~= nil and getgenv().VoicechatSpySettings.FollowDistance ~= nil, ((getgenv().VoicechatSpySettings.TrackVoice3d == nil and 'invalid argument #2 to \'SpyVoicechat\' (option \'TrackVoice3d\' expected, got nil)') or (getgenv().VoicechatSpySettings.FollowDistance == nil and 'invalid argument #2 to \'SpyVoicechat\' (option \'FollowDistance\' expected, got nil)')) or '') and (table.foreach(getgenv().VoicechatSpySettings, function(Option, Value)
@@ -360,9 +360,9 @@ for _, v in next, Players:GetPlayers() do
     end
 end
 
-local PlayerAdded; PlayerAdded = Players.PlayerAdded:Connect(function()
+local PlayerAdded; PlayerAdded = Players.PlayerAdded:Connect(function(Player)
     if not Exiting then
-        SpyVoicechat(v, {TrackVoice3d = TrackVoice3d, FollowDistance = FollowDistance})
+        SpyVoicechat(Player, {TrackVoice3d = TrackVoice3d, FollowDistance = FollowDistance})
     else
         PlayerAdded:Disconnect()
     end
