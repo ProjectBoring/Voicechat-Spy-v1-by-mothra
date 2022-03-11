@@ -303,55 +303,57 @@ local function SpyVoicechat(Player, Settings)
         CountLbl.Text = 'Spying: '..SpiedPlayersCount
     end
     
-    NewFrame.Button.Text = Player.DisplayName..(Player.DisplayName ~= Player.Name and ' @'..Player.Name or '')
-    
-    NewFrame.Parent = PlayersSC; NewFrame.Visible = true
-    
-    NewFrame.Button.MouseButton1Click:Connect(function()
-        CurrentCamera, Character, VoiceOrigin = workspace.CurrentCamera, Player and Player.Character and Player.Character.Parent and Player.Character or nil, Player and Player.Character and Player.Character.Parent and Player.Character:FindFirstChild('HumanoidRootPart')
+    if NewFrame and NewFrame:FindFirstChild('Button') then
+        NewFrame.Button.Text = Player.DisplayName..(Player.DisplayName ~= Player.Name and ' @'..Player.Name or '')
         
-        if ContinueLoop then
-            NewFrame.Button.TextColor3 = Color3.fromRGB(255, 0, 0); ContinueLoop = false
+        NewFrame.Parent = PlayersSC; NewFrame.Visible = true
+        
+        NewFrame.Button.MouseButton1Click:Connect(function()
+            CurrentCamera, Character, VoiceOrigin = workspace.CurrentCamera, Player and Player.Character and Player.Character.Parent and Player.Character or nil, Player and Player.Character and Player.Character.Parent and Player.Character:FindFirstChild('HumanoidRootPart')
             
-            UnspyVoicechat(Player)
-        elseif not ContinueLoop and CurrentCamera and Character and VoiceOrigin then
-            table.insert(SpiedPlayers, Player); SpiedPlayersCount = SpiedPlayersCount + 1; CountLbl.Text = 'Spying: '..SpiedPlayersCount
-            
-            NewFrame.Button.TextColor3 = Color3.fromRGB(0, 255, 0); ContinueLoop = true
-
-            if CurrentCamera and Character and VoiceOrigin then
-                task.spawn(function()
-                    while true do
-                        if ContinueLoop and IsPlayerSpied(Player) and Player.Parent and CurrentCamera.Parent and Character.Parent and VoiceOrigin.Parent then
-                            if getgenv().VoicechatSpySettings.TrackVoice3d == true then
-                                SoundService:SetListener(Enum.ListenerType.CFrame, VoiceOrigin.CFrame * (CFrame.new((VoiceOrigin.Velocity + VoiceOrigin.RotVelocity) + (CFrame.new(VoiceOrigin.Velocity + VoiceOrigin.RotVelocity).lookVector * getgenv().VoicechatSpySettings.FollowDistance))))
-                            elseif getgenv().VoicechatSpySettings.TrackVoice3d == false then
-                                SoundService:SetListener(Enum.ListenerType.CFrame, (VoiceOrigin.CFrame))
-                            end
-                            
-                            RunService.Heartbeat:wait()
-                            
-                            SoundService:SetListener(Enum.ListenerType.Camera)
-                        else
-                            SoundService:SetListener(Enum.ListenerType.Camera); SpiedPlayersCount = SpiedPlayersCount - 1; CountLbl.Text = 'Spying: '..SpiedPlayersCount
-                            
-                            if NewFrame.Parent then
-                                NewFrame.Button.TextColor3 = Color3.fromRGB(255, 0, 0); ContinueLoop = false
-                                
-                                if not Player or not Player.Parent then
-                                    Button:Destroy(); UnspyVoicechat(Player)
+            if ContinueLoop then
+                NewFrame.Button.TextColor3 = Color3.fromRGB(255, 0, 0); ContinueLoop = false
+                
+                UnspyVoicechat(Player)
+            elseif not ContinueLoop and CurrentCamera and Character and VoiceOrigin then
+                table.insert(SpiedPlayers, Player); SpiedPlayersCount = SpiedPlayersCount + 1; CountLbl.Text = 'Spying: '..SpiedPlayersCount
+                
+                NewFrame.Button.TextColor3 = Color3.fromRGB(0, 255, 0); ContinueLoop = true
+    
+                if CurrentCamera and Character and VoiceOrigin then
+                    task.spawn(function()
+                        while true do
+                            if ContinueLoop and IsPlayerSpied(Player) and Player.Parent and CurrentCamera.Parent and Character.Parent and VoiceOrigin.Parent then
+                                if getgenv().VoicechatSpySettings.TrackVoice3d == true then
+                                    SoundService:SetListener(Enum.ListenerType.CFrame, VoiceOrigin.CFrame * (CFrame.new((VoiceOrigin.Velocity + VoiceOrigin.RotVelocity) + (CFrame.new(VoiceOrigin.Velocity + VoiceOrigin.RotVelocity).lookVector * getgenv().VoicechatSpySettings.FollowDistance))))
+                                elseif getgenv().VoicechatSpySettings.TrackVoice3d == false then
+                                    SoundService:SetListener(Enum.ListenerType.CFrame, (VoiceOrigin.CFrame))
                                 end
+                                
+                                RunService.Heartbeat:wait()
+                                
+                                SoundService:SetListener(Enum.ListenerType.Camera)
+                            else
+                                SoundService:SetListener(Enum.ListenerType.Camera); SpiedPlayersCount = SpiedPlayersCount - 1; CountLbl.Text = 'Spying: '..SpiedPlayersCount
+                                
+                                if NewFrame.Parent then
+                                    NewFrame.Button.TextColor3 = Color3.fromRGB(255, 0, 0); ContinueLoop = false
+                                    
+                                    if not Player or not Player.Parent then
+                                        Button:Destroy(); UnspyVoicechat(Player)
+                                    end
+                                end
+                                
+                                break
                             end
                             
-                            break
+                            RunService.RenderStepped:wait()
                         end
-                        
-                        RunService.RenderStepped:wait()
-                    end
-                end)
+                    end)
+                end
             end
-        end
-    end)
+        end)
+    end
 end
 
 for _, v in next, Players:GetPlayers() do
