@@ -367,3 +367,15 @@ local PlayerAdded; PlayerAdded = Players.PlayerAdded:Connect(function(Player)
         PlayerAdded:Disconnect()
     end
 end)
+
+local PlayerRemoving; PlayerRemoving = Players.PlayerRemoving:Connect(function(Player)
+    if not Exiting then
+        for _, v in next, SpiedPlayers do
+            if Player == v then
+                SpiedPlayers[_] = nil; break
+            end
+        end
+    else
+        PlayerRemoving:Disconnect()
+    end
+end)
