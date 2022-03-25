@@ -2,7 +2,7 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-local VoicechatSpy = Instance.new('ScreenGui')
+local PrivatechatSpy = Instance.new('ScreenGui')
 local BG = Instance.new('Frame')
 local UICorner = Instance.new('UICorner')
 local Title = Instance.new('TextLabel')
@@ -20,20 +20,20 @@ local Button = Instance.new('TextButton')
 local UICorner_6 = Instance.new('UICorner')
 local AspectRatio = Instance.new('UIAspectRatioConstraint')
 
-VoicechatSpy.Name = game:GetService('HttpService'):GenerateGUID():gsub('[^0-9^%a].-', '')
-VoicechatSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-VoicechatSpy.DisplayOrder = 999999999
+PrivatechatSpy.Name = game:GetService('HttpService'):GenerateGUID():gsub('[^0-9^%a].-', '')
+PrivatechatSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+PrivatechatSpy.DisplayOrder = 999999999
 
 if syn and syn.protect_gui then
-    syn.protect_gui(VoicechatSpy); VoicechatSpy.Parent = game:GetService('CoreGui')
+    syn.protect_gui(PrivatechatSpy); PrivatechatSpy.Parent = game:GetService('CoreGui')
 elseif gethui or gethiddenui then
-    local Parent = gethui or gethiddenui; VoicechatSpy.Parent = Parent()
+    local Parent = gethui or gethiddenui; PrivatechatSpy
 else
-    VoicechatSpy.Parent = game:GetService('CoreGui')
+    PrivatechatSpy.Parent = game:GetService('CoreGui')
 end
 
 BG.Name = 'BG'
-BG.Parent = VoicechatSpy
+BG.Parent = PrivatechatSpy
 BG.BackgroundColor3 = Color3.fromRGB(68, 68, 68)
 BG.Position = UDim2.new(0.39405942, 0, 0.2141058, 0)
 BG.Selectable = true
@@ -49,7 +49,7 @@ Title.BorderSizePixel = 0
 Title.Size = UDim2.new(1, 0, 0.10105285, 0)
 Title.ZIndex = 4
 Title.Font = Enum.Font.Gotham
-Title.Text = 'Voicechat Spy v1'
+Title.Text = 'Privchat Spy v1'
 Title.TextColor3 = Color3.fromRGB(0, 200, 0)
 Title.TextSize = 14.000
 
@@ -214,7 +214,7 @@ Exit.MouseButton1Click:Connect(function()
         local T = Tween(BG, TweenInfo.new(.25, Enum.EasingStyle.Sine), {Size = UDim2.new(BG.Size.X.Scale, 0, 0, 0)})
         T:Play(); T.Completed:wait()
         
-        VoicechatSpy:Destroy()
+       PrivatechatSpy:Destroy()
         
         for _, v in next, SpiedPlayers do
             SpiedPlayers[_] = nil
